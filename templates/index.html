@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our W ChatBot</title>
+    <link rel="stylesheet" href= "{{ url_for('static',filename='styles/global.css') }}">
+</head>
+<body>
+
+        <div class="mascot">
+        <img id="mascot" src="static/mascot.png" alt="mascot jpeg">
+        </div>
+    <div class="container">
+
+        <h1>Our W ChatBot</h1>
+    </div><br>
+        <div class="form">
+        <form action="/process_input" method="post">
+            <label for="user_input">Enter your message:</label>
+            <input type="text" id="user_input" name="user_input">
+            <input type="submit" id="send-button" value="Submit">
+        </form>
+        </div>
+        <div id="output">
+            <!-- Output will be displayed here -->
+        </div>
+
+        <script>
+            document.querySelector('form').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const inputField = document.querySelector('#user_input');
+                const outputDiv = document.querySelector('#output');
+
+                const formData = new FormData();
+                formData.append('user_input', inputField.value);
+
+                fetch('/process_input', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        outputDiv.innerText = data;
+                        inputField.value = ''; // Clear the input field
+                    });
+            });
+        </script>
+</body>
+</html>
